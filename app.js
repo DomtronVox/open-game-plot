@@ -7,16 +7,6 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-
-//connect to mongodb
-var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-
-mongoose.connect('mongodb://localhost/story_site')
-  .then(() =>  console.log('Database connection succesfull'))
-  .catch((err) => console.error(err));
-
-
 //Setup express app
 var app = express();
 
