@@ -1,0 +1,98 @@
+extends layout
+  
+block head
+  if user
+    script(src='/javascript/submitControl.js')
+  
+  
+
+block content
+
+  if !user
+    h3 You need to be logged in to submit content
+    p
+      a(href='/login') Click here to login
+      span  or 
+      a(href='/register') here to register.
+
+  else
+
+    div
+      form(role='form', action='/submit', method='post')
+        h2.form-signin-heading Choose your submissions type and licence.
+
+        label(for='resourceType') Resource Type: 
+        select.form-control(id='resourceType', name='type', required) 
+          option(value="", selected, disabled) Select Type
+          option Character 
+          option Quest 
+          option Location 
+          option Item
+
+        label(for='license') License: 
+        select.form-control(id='license', name='license' required) 
+          option(value="", selected, disabled) Select License
+          option CC0 
+          option CC-By-SA 
+          option MIT
+
+        div(id='generalDetails')
+          h2 General Details
+  
+          label(for='generalTitle') Resource Title: *
+          input.form-control(type='text', id='generalTitle', name='title', required)
+
+          label(for='generalSetting') Setting (Ctrl+click for multi-select):
+          select.form-control( id='generalSetting', name='setting', size='5', multiple, required) 
+            option Generic/Any 
+            option Sci-Fi 
+            option Fantisy 
+            option Modern 
+            option Western 
+            option Other
+          div(id='generalSettingOtherDetail')
+            label(for='generalSettingOther') Other:
+            input.form-control(type='text', id='generalSettingOther', name='setting_other')
+        
+          label(for='generalStyle') Resource Style: *
+          input.form-control(type='text', id='generalStyle', name='style', required)
+        
+          label(for='generalTags') Tags (Seperate with commas ','):
+          input.form-control(type='textarea', id='generalTags', name="tags")
+
+        div(id='characterDetails') 
+          h2 Character Details
+          label(for='characterName') Character Name: *
+          input.form-control(type='text', id='characterName', name='character[name]', required)
+
+          label(for='characterAge') Character Age: 
+          input.form-control(type='text', id='characterAge', name='character[age]')
+
+          label(for='characterGender') Character Gender: * 
+          select.form-control(id='characterGender', name='character[gender]', required)
+            option(value="", selected, disabled) Select Gender
+            option Male
+            option Female
+            option Either
+        
+          label(for='characterDescription') Short Description: *
+          input.form-control(type='textarea', id='characterDescription', name='character[description]', required)
+        
+          label(for='characterLongDescription') Long Description: 
+          input.form-control(type='textarea', id='characterLongDescription', name='character[long_description]')
+
+          label(for='characterDialog') Dialog (one per line): 
+          textarea.form-control(id='characterDialog', name='character[dialog]')
+
+        div(id='questDetails')
+
+        div(id='locationDetails')
+
+        div(id='itemDetails')
+
+        div(id='miscDetails')
+
+        br
+      
+        button.btn.btn-lg.btn-primary.btn-block(id='submitButton', type='submit') Submit
+
