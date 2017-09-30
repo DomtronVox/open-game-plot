@@ -6,7 +6,8 @@ var submitContentController = {};
 
 // Restrict access to submit page
 submitContentController.page = function(req, res) {
-    res.render('submit', { user : req.user });
+    var type_list = submitContentController.type_list;
+    res.render('submit', { user : req.user, type_list : type_list });
 };
 
 
@@ -26,13 +27,11 @@ submitContentController.doSubmit = function(req, res) {
 
     //callback function for the database model register function
     callback = function(err, content) {
+        console.log(err)
         if (err) {
-            return res.render('submit', { user : user });
+            return res.render('submit', { user : req.user });
         }
-        
-        passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
-        });
+        res.redirect('/');
     }
 
     //register content with database

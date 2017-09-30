@@ -24,10 +24,9 @@ block content
         label(for='resourceType') Resource Type: 
         select.form-control(id='resourceType', name='type', required) 
           option(value="", selected, disabled) Select Type
-          option Character 
-          option Quest 
-          option Location 
-          option Item
+          for type in type_list
+            option #{type}
+          
 
         label(for='license') License: 
         select.form-control(id='license', name='license' required) 
