@@ -50,7 +50,7 @@ submitContentController.edit_page = function(req, res) {
 
 // Post edit update
 submitContentController.doEdit = function(req, res) {
-    //passport.authenticate('local')(req, res, function () {
+    //passport.authenticate('local', { failureRedirect: '/submit/edit?something' })(req, res, function () {
     //  res.redirect('/');
     //});
     //TODO not sure we need this

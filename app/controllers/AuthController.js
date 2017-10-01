@@ -21,8 +21,8 @@ userController.doRegister = function(req, res) {
       return res.render('register', { user : user });
     }
 
-    passport.authenticate('local')(req, res, function () {
-      res.redirect('/');
+    passport.authenticate('local', { failureRedirect: '/users/register' })(req, res, function () {
+      res.redirect('/'+req.user.username);
     });
   });
 };
@@ -34,7 +34,7 @@ userController.login = function(req, res) {
 
 // Post login
 userController.doLogin = function(req, res) {
-  passport.authenticate('local')(req, res, function () {
+  passport.authenticate('local', { failureRedirect: '/users/login' })(req, res, function () {
     res.redirect('/');
   });
 };

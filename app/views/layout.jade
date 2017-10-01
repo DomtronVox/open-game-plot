@@ -28,14 +28,14 @@ html
               a(href='/submit') Submit Content
             if (!user)
               li
-                a(href='/login') Login
+                a(href='/users/login') Login
               li
-                a(href='/register') Register
+                a(href='/users/register') Register
             if (user)
               li
-                a(href='/users') Welcome #{user.username}
+                a(href='/users/#{user.username}') Welcome #{user.username}
               li
-                a(href='/logout') Logout
+                a(href='/users/logout') Logout
 
     div.container
       div#content
