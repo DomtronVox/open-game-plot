@@ -8,7 +8,8 @@ div.preview
 
   ul
     if author
-      li Author: #{author}
+      li Author: 
+        a(href="/users/#{author}") #{author}
     else
       li Author: None
 
@@ -23,5 +24,5 @@ div.preview
     else
       li Tags: None
 
-    li #{createdAt}
+    li Created #{date}
 

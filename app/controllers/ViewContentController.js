@@ -2,6 +2,8 @@ var mongoose = require("mongoose");
 var passport = require("passport");
 var Content = require("../models/Content");
 
+var dateFormat = require('dateformat');
+
 var async = require("async");
 
 var viewContentController = {};
@@ -38,9 +40,8 @@ viewContentController.home = function(req, res) {
 
                         //tweak the date formate
                         var date = new Date(data.createdAt);
-                        console.log(date.getMonth()+" "+date.getDay()+" "+date.getYear())
-                        data.createdAt = date.getMonth()+" "+date.getDay()+" "+date.getYear();
-
+                        data.date = dateFormat(date);
+                        
                         //render data into a htmlet and add it to the data list for final render
                         res.app.render("content_htmlet_summery", data, function(err, html){
                             if(err) {
