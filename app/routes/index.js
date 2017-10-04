@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var auth = require("../controllers/AuthController.js");
+var view_content = require("../controllers/ViewContentController.js");
 
 // restrict index for logged in user only
-router.get('/', auth.home);
+router.get('/', view_content.home);
 
 
 

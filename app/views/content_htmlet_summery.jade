@@ -1,0 +1,27 @@
+
+
+div.preview
+
+  //layout the general information
+  a(href="/#{_id}") 
+    h4 #{title}
+
+  ul
+    if author
+      li Author: #{author}
+    else
+      li Author: None
+
+    li License: #{license}
+
+    li Type: #{type}
+
+    li Setting: #{setting}
+    
+    if tags
+      li Tags: #{tags}
+    else
+      li Tags: None
+
+    li #{createdAt}
+

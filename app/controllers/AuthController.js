@@ -4,11 +4,6 @@ var User = require("../models/User");
 
 var userController = {};
 
-// Restrict access to root page
-userController.home = function(req, res) {
-  res.render('index', { user : req.user });
-};
-
 // Go to registration page
 userController.register = function(req, res) {
   res.render('register');

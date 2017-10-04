@@ -15,6 +15,9 @@ var ContentSchema = new Schema({
     
     //points to another Schema that holds details based on the type above
     details: Object
+},
+{
+  timestamps: true //automatically handles createdAt and updatedAt fields
 });
 
 //ContentSchema.plugin(passportLocalMongoose);

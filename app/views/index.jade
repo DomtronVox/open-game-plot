@@ -1,5 +1,26 @@
 extends layout
 
 block content
-  h1 Node.js, Express.js, Mongoose.js and Passport.js
-  p User Authentication Example
+  h2 About
+  p Welcome to OpenGamePlot. Our gole it to provide a place to store open source characters, items, missions and general writtings that can be used in games. The sites main features are: 
+  ul 
+    li Form: to guide content creators in uploading their content
+    li Downloaders: that allows downloading content in various formats like xml, and yaml
+    li User profiles: to allow viewing your favorite content creators
+    li Advanced Search: to allow you to find exactly what you need
+    li Variants: to allow others to take an idea and expand on it
+    li Collections: to allow collecting multiple items into a cohisive whole
+
+  h2 The Newest, The Most Popular
+
+  fieldset.ContentList.col-md-6 
+    legend Recent Uploads
+    
+    for preview_htmlet in recent
+      !{preview_htmlet}
+
+  fieldset.ContentList.col-md-6 
+    legend Popular Content
+    
+    for preview_htmlet in popular
+      !{preview_htmlet}

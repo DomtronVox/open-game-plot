@@ -47,5 +47,10 @@ form input {
   border-top-right-radius: 0;
 }
 
-
+/* boxes that show summery of a preview */
+.preview {
+  border:2px black solid;
+  padding:10px;
+  margin:10px;
+}
 
