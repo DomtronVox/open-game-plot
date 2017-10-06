@@ -72,8 +72,46 @@ viewContentController.home = function(req, res) {
 
 // allow polling for any content by id or ?
 viewContentController.page = function(req, res) {
-    var type_list = submitContentController.type_list;
-    res.render('content', { user : req.user, type_list : type_list });
+    var error = function(req, res, err) {
+        var message 
+
+        if (!err) {
+            message = "The content you are looking for does not exist.";
+            res.status(404);
+
+        } else {
+            message = "Internal server error.";
+            res.status(500);
+            console.log(err)
+        }
+
+        res.render('error', { user: req.user, message: message, error: {status: 404} });
+    }
+
+    //if the id query exists look for the database entry
+    if (req.query.id) {
+        Content.find( {_id: req.query.id} 
+            , function(err, content) {
+                //internal server error occured
+                if(err) {
+                    error(req, res, err);
+ 
+                //we could not find content with the given id
+                } else if (content.length < 1) {
+                    content(req, res);
+
+                //everything is good
+                } else {
+                    res.render('content', { user : req.user, data : content[0] });
+                }
+            } 
+        )
+    //send a 404 error
+    } else {
+        error(req, res);
+    }
+
+    
 };
 
 

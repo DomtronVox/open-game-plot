@@ -1,0 +1,32 @@
+extends layout
+  
+block head
+    
+
+block content
+
+  //layout the general information
+  h2 #{data.title}
+
+  h3 General Information
+
+  p Author: #{data.author}
+
+  p License: #{data.license}
+
+  p Resource Type: #{data.type}
+
+  p Setting: #{data.setting}
+    
+  p Style: #{data.style}
+
+  p Tags: #{data.tags}
+
+  //generate the detail specific info
+
+  h3 #{data.type} Information
+  //for key, value in data.detail
+  //    p key : value
+
+  //layout misc information
+  //TODO

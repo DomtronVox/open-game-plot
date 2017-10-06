@@ -56,7 +56,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error', { user: req.user });
+  res.render('error', { user: req.user, error: {status: 404} });
 });
 
 module.exports = app;
