@@ -5,13 +5,19 @@ $(window).on('load', function() {
 
 //first hide everything we don't want showing
 var hide_sections = function() {
-    $("#generalDetails").hide()   
-    $("#generalSettingOtherDetail").hide()
-    $("#miscDetails").hide()
+    $("#generalDetails").hide();
+    $("#generalDetails :input").attr("disabled",true);
+  
+    $("#generalSettingOtherDetail").hide();
+    $("#generalSettingOtherDetail :input").attr("disabled",true);
 
-    $("#characterDetails").hide()
+    $("#miscDetails").hide();
+    $("#miscDetails :input").attr("disabled",true);
 
-    $("#submitButton").hide()
+    $("#characterDetails").hide();
+    $("#characterDetails :input").attr("disabled",true);
+
+    $("#submitButton").hide();
 }
 hide_sections();
 
@@ -23,23 +29,28 @@ $("#resourceType").on('change', function(){
     hide_sections();
 
     //make sure the general details are visible after the first type selection
-    $("#generalDetails").show()
-    $("#miscDetails").show()
-    $("#submitButton").show()
+    $("#generalDetails").show();
+    $("#generalDetails :input").attr("disabled",false);
+    $("#miscDetails").show();
+    $("#miscDetails :input").attr("disabled",false);
+    $("#submitButton").show();
 
     //get type value then show the correct details section related to it
-    var resource_type = $("#resourceType").val()
+    var resource_type = $("#resourceType").val();
+    var detailID = resource_type.toLowerCase()+"Details";
 
     switch (resource_type.toLowerCase()) {
         case "character":
         case "quest":
         case "location":
         case "item":
-            $("#"+resource_type.toLowerCase()+"Details").show()
+            
+            $("#"+detailID).show();
+            $("#"+detailID+" :input").attr("disabled",false);
             break;
 
         default:
-            console.error("Error: "+resource_type+" is not a valid type.")      
+            console.err("Error: "+resource_type+" is not a valid type.")      
     }
 })
 
