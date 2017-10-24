@@ -5,28 +5,75 @@ block head
 
 block content
 
-  //layout the general information
   h2 #{data.title}
 
-  h3 General Information
+  //information about the upload
+  div.ContentList.col-md-6 
 
-  p Author: #{data.author}
+    //layout the general information
+    fieldset
+      legend General Information
 
-  p License: #{data.license}
+      table
+        tr
+          td Author
+          td 
+            a(href="/users/#{data.author.username}") #{data.author.username}
 
-  p Resource Type: #{data.type}
+        tr
+          td License 
+          td #{data.license}
 
-  p Setting: #{data.setting}
+        tr
+          td Resource Type
+          td #{data.type}
+
+        tr
+          td Setting
+          td #{data.setting}
     
-  p Style: #{data.style}
+        tr
+          td Style 
+          td #{data.style}
 
-  p Tags: #{data.tags}
+        tr
+          td Tags
+          td #{data.tags}
 
-  //generate the detail specific info
+    //generate the detail specific info
+    fieldset
+      legend #{data.type} Information
+      table
+        for value, key in data.details
+          tr
+            td #{key} 
+            td #{value} 
 
-  h3 #{data.type} Information
-  //for key, value in data.detail
-  //    p key : value
+    //layout misc information
+    //TODO
 
-  //layout misc information
-  //TODO
+  //actions to perform with the content
+  div.ContentList.col-md-6 
+
+    //sugested actions. Those set by the uploader
+    fieldset
+      legend Sugested Actions
+
+    //all supported actions
+    fieldset
+      legend Actions
+
+      ul
+        li Make Variant
+        li Download Data: 
+          select.form-control( id='downloadSelect')
+            option(value="", selected, disabled) Select Download Format
+        li Add to Collection
+      
+    fieldset
+      legend Social
+      
+      ul
+        li Facebook Share Like
+        li Google+ Share +1
+        li Twitter Tweat

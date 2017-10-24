@@ -9,7 +9,7 @@ div.preview
   ul
     if author
       li Author: 
-        a(href="/users/#{author}") #{author}
+        a(href="/users/#{author.username}") #{author.username}
     else
       li Author: None
 

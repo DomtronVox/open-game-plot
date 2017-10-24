@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var passport = require("passport");
 var Content = require("../models/Content");
+var CharacterDetail = require("../models/CharacterDetail");
 
 var submitContentController = {};
 
@@ -21,22 +22,43 @@ submitContentController.type_list = [
 ]
 
 submitContentController.doSubmit = function(req, res) {
+
     //extract content from page
     content = req.body;
     content.tags = content.tags.split(',');
+    content.author = req.user;
 
-    //callback function for the database model register function
-    callback = function(err, content) {
-        console.log(err)
-        if (err) {
-            return res.render('submit', { user : req.user });
-        }
-        res.redirect('/');
+    //create content detail
+    var detail;
+    switch(content.type.toLowerCase()) {
+        case "character":
+            detail_obj = new CharacterDetail.model(content.character);
+            break;
     }
 
+
+    //set detail object id for Content object
+    content.detail = detail_obj._id; 
+
     //register content with database
-    var content = new Content(content);
-    content.save(callback);
+    var content_obj = new Content.model(content);
+    content_obj.save(function(err, content) {
+        if (err) {
+            return res.render('error', 
+                { user : req.user, message: err, error: {status: 500} }
+            );
+        }
+
+        detail_obj.save(function(err, content) {
+            if (err) {
+                return res.render('error', 
+                     { user : req.user, message: err, error: {status: 500} }
+                );
+            }
+
+            res.redirect('/');
+        })
+    });
 };
 
 // populate submit page for editing

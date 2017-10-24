@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var passport = require("passport");
+var User = require("../models/User");
 var Content = require("../models/Content");
 
 var dateFormat = require('dateformat');
@@ -29,35 +30,37 @@ viewContentController.home = function(req, res) {
     //TODO try to make this less convoluted.
     async.parallel([
         function(parallel_callback) {
-            Content.find( {} 
-                , viewContentController.preview_columns
-                , recent_query 
-                , function(err, recent_list) {
-                    if(err) {return;}
+            Content.model
+                .find( {}, viewContentController.preview_columns, recent_query)
+                .populate("author")
+                .exec( 
+                    function(err, recent_list) {
+                        if(err) {return;}
 
-                    //step through each element in the data and render it to html     
-                    async.each(recent_list, function(data, each_callback) {
+                        //step through each element in the data and render it to html     
+                        async.each(recent_list, function(data, each_callback) {
+                            
+                            //tweak the date formate
+                            var date = new Date(data.createdAt);
+                            data.date = dateFormat(date);
 
-                        //tweak the date formate
-                        var date = new Date(data.createdAt);
-                        data.date = dateFormat(date);
-                        
-                        //render data into a htmlet and add it to the data list for final render
-                        res.app.render("content_htmlet_summery", data, function(err, html){
-                            if(err) {
-                                console.err(err)
-                                each_callback(err);
-                            } else {
-                                recent_previews.push(html);
-                                each_callback();
-                            }
+                            //render data into a htmlet and add it to the data list for final render
+                            res.app.render("content_htmlet_summery", data, function(err, html){
+                                if(err) {
+                                    console.err(err)
+                                    each_callback(err);
+                                } else {
+                                    recent_previews.push(html);
+                                    each_callback();
+                                }
+                            })
                         })
-                    })
+
+                        //do not care about the results return since we make it ourselves
+                        parallel_callback(null, "");
+                    }
+                )
                     
-                    //do not care about the results return since we make it ourselves
-                    parallel_callback(null, "");
-                } 
-            )
          }//,
          //popular looks exactly like the first one exept we push to the popular list
       ],
@@ -90,22 +93,31 @@ viewContentController.page = function(req, res) {
 
     //if the id query exists look for the database entry
     if (req.query.id) {
-        Content.find( {_id: req.query.id} 
-            , function(err, content) {
-                //internal server error occured
-                if(err) {
-                    error(req, res, err);
- 
-                //we could not find content with the given id
-                } else if (content.length < 1) {
-                    content(req, res);
+        Content.model.findOne( {_id: req.query.id} )
+               .populate("author")
+               .exec(function(err, content) {
+                   //internal server error occured
+                   if(err) {
+                       return error(req, res, err);
+                   }
 
-                //everything is good
-                } else {
-                    res.render('content', { user : req.user, data : content[0] });
-                }
-            } 
-        )
+                   //determin which model we need to search
+                   var ContentDetail = Content.getDetailByName(content.type)
+
+                   ContentDetail.model.findOne( {_id: content.detail }, function(err, detail) {
+                       if(err) {
+                           return error(req, res, err);
+                       }
+
+                       //set the details data then render the page
+                       content.details = {}
+                       for (var index in ContentDetail.public_details) {
+                           var key = ContentDetail.public_details[index];
+                           content.details[key] = detail[key];
+                       }
+                       res.render('content', { user : req.user, data : content })
+                   })
+               })
     //send a 404 error
     } else {
         error(req, res);

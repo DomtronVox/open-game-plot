@@ -54,3 +54,14 @@ form input {
   margin:10px;
 }
 
+table td{
+  padding: 4px;
+  padding-right: 10px;
+}
+
+fieldset{
+  margin-top: 30px;
+}
+
+}
+
