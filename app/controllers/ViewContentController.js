@@ -42,7 +42,7 @@ viewContentController.home = function(req, res) {
                             
                             //tweak the date formate
                             var date = new Date(data.createdAt);
-                            data.date = dateFormat(date);
+                            data.date = date; //dateFormat(date);
 
                             //render data into a htmlet and add it to the data list for final render
                             res.app.render("content_htmlet_summery", data, function(err, html){
