@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 mongoose.connect(process.env.DBURL || 'mongodb://localhost/open_game_plot')
-  .then(() =>  console.log('Database connection succesfull'))
+  .then(() =>  console.log('Database connection successful'))
   .catch((err) => console.error(err));
 
 var port = process.env.PORT || 8080;
