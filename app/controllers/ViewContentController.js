@@ -3,7 +3,7 @@ var passport = require("passport");
 var User = require("../models/User");
 var Content = require("../models/Content");
 
-var dateFormat = require('dateformat');
+//var dateFormat = require('dateformat');
 
 var async = require("async");
 
@@ -29,6 +29,7 @@ viewContentController.home = function(req, res) {
     //TODO desperatly need to handle the err in callbacks 
     //TODO try to make this less convoluted.
     async.parallel([
+        //One of the tasks is to pull the most recently created content
         function(parallel_callback) {
             Content.model
                 .find( {}, viewContentController.preview_columns, recent_query)
@@ -62,7 +63,9 @@ viewContentController.home = function(req, res) {
                 )
                     
          }//,
-         //popular looks exactly like the first one exept we push to the popular list
+
+         //Another task is to pull the most popular content
+         //TODO: popular looks exactly like the first one exept we push to the popular list
       ],
     //send data
     function(err, results) {
@@ -75,6 +78,9 @@ viewContentController.home = function(req, res) {
 
 // allow polling for any content by id or ?
 viewContentController.page = function(req, res) {
+
+    //TODO improve this. If a user makes a bad request (i.e. doesn't define content id) 
+    //    then a bad request status should be sent
     var error = function(req, res, err) {
         var message 
 
@@ -83,7 +89,7 @@ viewContentController.page = function(req, res) {
             res.status(404);
 
         } else {
-            message = "Internal server error.";
+            message = "Internal server error: "+err;
             res.status(500);
             console.log(err)
         }
@@ -91,7 +97,7 @@ viewContentController.page = function(req, res) {
         res.render('error', { user: req.user, message: message, error: {status: 404} });
     }
 
-    //if the id query exists look for the database entry
+    //if the id query variable is defined look for the database entry
     if (req.query.id) {
         Content.model.findOne( {_id: req.query.id} )
                .populate("author")
@@ -118,7 +124,8 @@ viewContentController.page = function(req, res) {
                        res.render('content', { user : req.user, data : content })
                    })
                })
-    //send a 404 error
+
+    //if that ID does not exist send a 404 error
     } else {
         error(req, res);
     }

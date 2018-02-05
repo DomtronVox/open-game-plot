@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 
 var formOpts = {
-    gender: ["male", "female", "either"]
+    gender: ["male", "female", "either", "genderless"]
 }
 
 //list all details that are publically displayed. 
